@@ -7,10 +7,9 @@ import java.util.List;
 public class Utilities {
 
 
-    public static List<Integer> loadIntegers(String inputPath){
+    public static List<Integer> loadIntegersAsList(String inputPath){
 
         List<Integer> values = new ArrayList<>();
-
         try {
 
             BufferedReader reader = new BufferedReader(new FileReader(inputPath));
@@ -22,8 +21,22 @@ public class Utilities {
         } catch (IOException e1) {
             System.err.println("Input Output exception: " + e1);
         }
-
         return values;
+    }
 
+    public static String loadInputAsString(String inputPath) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(inputPath));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+
+        } catch (IOException e) {
+            System.err.println("Input Output exception " + e);
+        }
+
+        return sb.toString();
     }
 }

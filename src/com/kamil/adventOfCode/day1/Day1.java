@@ -8,7 +8,7 @@ public class Day1 {
     private final static String PATH = "src/com/kamil/adventOfCode/day1/InputDay1part1.txt";
 
     public static long solveProblemA(String path){
-        List<Integer> data = Utilities.loadIntegers(path);
+        List<Integer> data = Utilities.loadIntegersAsList(path);
         long result = 0;
 
         for (Integer value: data){
@@ -22,7 +22,7 @@ public class Day1 {
     }
 
     public static long solveProblemB(String path){
-        List<Integer> data = Utilities.loadIntegers(path);
+        List<Integer> data = Utilities.loadIntegersAsList(path);
         long result = 0;
 
         for (Integer value: data){
