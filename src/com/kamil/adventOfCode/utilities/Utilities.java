@@ -36,7 +36,21 @@ public class Utilities {
         } catch (IOException e) {
             System.err.println("Input Output exception " + e);
         }
-
         return sb.toString();
+    }
+
+    public static List<String> loadInputAsListOfStrings(String inputPath){
+        List<String> listOfStrings = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(inputPath));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                listOfStrings.add(line);
+            }
+
+        } catch (IOException e) {
+            System.err.println("Input Output exception " + e);
+        }
+        return listOfStrings;
     }
 }
