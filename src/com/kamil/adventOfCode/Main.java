@@ -26,5 +26,6 @@ public class Main {
 //        System.out.println("Day 5 (part2) answer is: " + Day5.solveProblemB());
 
         System.out.println("Day 6 (part1) answer is: " + Day6.solveProblemA());
+        System.out.println("Day 6 (part2) answer is: " + Day6.solveProblemB());
     }
 }

@@ -9,10 +9,15 @@ import java.util.*;
 public class Day6 {
     private final static String PATH = "src/com/kamil/adventOfCode/day6/InputDay6.txt";
     private final static String ROOT = "COM";
+    private final static String START = "YOU";
+    private final static String END = "SAN";
+    private static Map<String, Node> tree;
 
+
+    //calculates num of orbits
     public static int solveProblemA( String path) {
         List<String> orbits = readData(path);
-        Map<String, Node> tree = buildTree(orbits);
+        tree = buildTree(orbits);
         int numOfAllOrbits = 0;
         for (Node n : tree.values()){
             numOfAllOrbits += n.getLevel();
@@ -22,6 +27,38 @@ public class Day6 {
 
     public static int solveProblemA(){
         return solveProblemA(PATH);
+    }
+
+    //calculates distance between YOU and SAN
+    public static int solveProblemB(String path) {
+        List<String> orbits = readData(path);
+        if (tree == null) tree = buildTree(orbits);
+        String fcParentNode = findFirstCommonParentNode(START, END, tree);
+
+        // distance between 2 objects: START is orbiting and END is orbiting
+        return tree.get(START).getLevel() + tree.get(END).getLevel() - 2 - 2 * tree.get(fcParentNode).getLevel();
+    }
+
+    public static int solveProblemB(){
+        return solveProblemB(PATH);
+    }
+
+    private static String findFirstCommonParentNode(String firstNode, String secondNode, Map<String, Node> tree){
+        Set<String> nodesFromFirstNodeToTheRoot = new HashSet<>();
+        String node = firstNode;
+        String parent;
+        while (!node.equals(ROOT)){
+            parent = tree.get(node).getParent();
+            nodesFromFirstNodeToTheRoot.add(parent);
+            node = parent;
+        }
+        node = secondNode;
+        while (!node.equals(ROOT)){
+            parent = tree.get(node).getParent();
+            if (nodesFromFirstNodeToTheRoot.contains(parent)) return parent;
+            node = parent;
+        }
+        return ROOT;
     }
 
     private static List<String> readData(String path){
@@ -43,7 +80,10 @@ public class Day6 {
         for (String s : orbits){
             parent = s.substring(0,s.indexOf(')'));
             child = s.substring(s.indexOf(')') + 1);
-            if (!tree.containsKey(parent)) tree.put(parent, new Node(parent));
+            if (!tree.containsKey(parent)) {
+                tree.put(parent, new Node(parent));
+            }
+            tree.get(parent).addNewChild(child);
             if (!tree.containsKey(child)) {
                 tree.put(child, new Node(child, parent));
             } else tree.get(child).setParent(parent);
@@ -76,18 +116,26 @@ public class Day6 {
         String parent;
         int level;
         boolean isLevelSet;
+        List<String> children;
 
         public Node(String object) {
-            this.object = object;
-            isLevelSet = false;
+            this(object, null);
         }
 
         public Node(String object, String parent ) {
             this.object = object;
             this.parent = parent;
             isLevelSet = false;
+            children = new ArrayList<>();
         }
 
+        public List<String> getChildren() {
+            return children;
+        }
+
+        public void addNewChild(String childNode){
+            children.add(childNode);
+        }
 
         public String getObject() {
             return object;
