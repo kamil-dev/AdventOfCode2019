@@ -48,6 +48,49 @@ public class Day8 {
         return counter;
     }
 
+    public static void solveProblemB(String path) {
+        char[] buffer = new char[25 * 6];
+        char[] result = new char[25 * 6];
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+            bufferedReader.read(result);
+            System.out.println(Arrays.toString(result));
+            while (bufferedReader.read(buffer) != -1) {
+                result = addTwoLayers(result, buffer);
+                System.out.println(Arrays.toString(buffer));
+            }
+            System.out.println(Arrays.toString(result));
+            printPicture(25, 6, result);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void solveProblemB() {
+        solveProblemB(PATH);
+    }
+
+    public static char[] addTwoLayers (char[] upperLayer, char[] lowerLayer){
+        for (int i = 0; i < upperLayer.length; i++) {
+            if (upperLayer[i] == '2') upperLayer[i] = lowerLayer[i];
+        }
+        return upperLayer;
+    }
+
+    public static void printPicture(int width, int height, char[] pixels) {
+        for (int i = 0; i < pixels.length ; i++) {
+            if (i % width == 0) System.out.println();
+            if (pixels[i] == '0') System.out.print(' ');
+            if (pixels[i] == '1') System.out.print('o');
+            if (pixels[i] == '2') System.out.print(' ');
+        }
+    }
+
 
 
 }
