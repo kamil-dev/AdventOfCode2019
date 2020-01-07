@@ -37,7 +37,8 @@ public class Main {
 //        System.out.println("Day 8 (part1) answer is: " + Day8.solveProblemA());
 //        System.out.println("Day 8 (part2) answer is: "); Day8.solveProblemB();
 
-       System.out.println("Day 10 (part1) answer is: " + Day10.solveProblemA(Day10.PATH));
+//       System.out.println("Day 10 (part1) answer is: " + Day10.solveProblemA(Day10.PATH));
+        System.out.println("Day 10 (part2) answer is: " + Day10.solveProblemB(Day10.PATH,199));
     }
 
 }

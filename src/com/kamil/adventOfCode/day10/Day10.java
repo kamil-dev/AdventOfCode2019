@@ -53,16 +53,90 @@ public class Day10 {
     }
 
     public static int solveProblemA(String path){
+        return findAsteroidWithMostVisible(path).getVisibleAsteroids().size();
+    }
+
+    private static Asteroid findAsteroidWithMostVisible(String path){
         loadData(path);
         findConnectionsBetweenAsteroids();
         int maxNumOfVisibleAsteroids = 0;
+        Asteroid searchedAsteroid = null;
         int numOfConnections;
         for (Asteroid a : allAsteroids){
 
             numOfConnections = a.getVisibleAsteroids().size();
-            if (numOfConnections > maxNumOfVisibleAsteroids) maxNumOfVisibleAsteroids = numOfConnections;
+            if (numOfConnections > maxNumOfVisibleAsteroids) {
+                maxNumOfVisibleAsteroids = numOfConnections;
+                searchedAsteroid = a;
+            }
         }
-        return maxNumOfVisibleAsteroids;
+        return searchedAsteroid;
+
+    }
+
+    public static int solveProblemB(String path, int numOfSearchedAsteroid){
+        Asteroid a = findAsteroidWithMostVisible(path);
+//        System.out.println("Central asteroid: " + a);
+        Set<Asteroid> visibleAsteroids = a.getVisibleAsteroids();
+        List<Asteroid> visibleAsteroidsAsList = new ArrayList<>(visibleAsteroids
+        );
+        Collections.sort(visibleAsteroidsAsList, new Comparator<Asteroid>() {
+            @Override
+            public int compare(Asteroid a1, Asteroid a2) {
+                double angleA1 = calculateAngleInRadians(a,a1);
+                double angleA2 = calculateAngleInRadians(a,a2);
+                return (int)(1000 * (angleA1 - angleA2));
+            }
+        });
+//        for (int i = 0; i < visibleAsteroidsAsList.size() ; i++) {
+//            System.out.println(i+ 1 + ". " + visibleAsteroidsAsList.get(i) + ", angle: " + calculateAngleInRadians(a, visibleAsteroidsAsList.get(i)));
+//        }
+        return visibleAsteroidsAsList.get(numOfSearchedAsteroid).getX() * 100 + visibleAsteroidsAsList.get(numOfSearchedAsteroid).getY();
+
+    }
+
+    public static double calculateAngleInRadians(Asteroid centralAsteroid, Asteroid visibleAsteroid){
+        int x1 = centralAsteroid.getX();
+        int y1 = centralAsteroid.getY();
+        int x2 = visibleAsteroid.getX();
+        int y2 = visibleAsteroid.getY();
+        double angle;
+
+        //angle between 0 and pi/2
+        if (x2 >= x1 && y2 <= y1 ) {
+            if (y2 == y1) {
+                angle = Math.PI/2;
+            } else {
+                angle = Math.atan((double)(x2 - x1) / (y1 - y2));
+            }
+        }
+        //angle between pi/2 and pi
+        else if (x2 >= x1 && y2 >= y1){
+            if (x2 == x1) {
+                angle = Math.PI;
+            } else {
+                angle = Math.PI/2 + Math.atan((double)(y2 - y1) / (x2 - x1));
+            }
+        }
+        //angle between pi and 3pi/2
+        else if (x2 <= x1 && y2 >= y1){
+            if (y2 == y1) {
+                angle = 3 * Math.PI/2;
+            } else {
+                angle = Math.PI + Math.atan((double)(x1 - x2) / (y2 - y1));
+            }
+        }
+        //angle between 3pi/2 and 2pi
+        else {
+            if (x2 == x1) {
+                angle = 2 * Math.PI;
+            } else {
+                angle = 3* Math.PI/2 + Math.atan((double)(y1 - y2) / (x1 - x2));
+            }
+
+        }
+        return angle;
+
     }
 
 
